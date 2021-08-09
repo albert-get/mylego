@@ -13,6 +13,11 @@
       "prettier --write",
       "eslint --fix",
       "git add ."
+    ],
+    "src/{main.ts,App.vue}": [
+      "prettier --write",
+      "eslint --fix",
+      "git add ."
     ]
   },
   "husky": {
