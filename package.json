@@ -9,12 +9,17 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "src/**/*.{js,json,css,vue}": [
+    "src/**/*.{js,ts,json,css,vue}": [
       "prettier --write",
       "eslint --fix",
-      "git add"
+      "git add ."
     ]
-},
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "dependencies": {
     "core-js": "^3.6.5",
     "vue": "^3.0.0"
