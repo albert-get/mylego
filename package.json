@@ -11,13 +11,11 @@
   "lint-staged": {
     "src/**/*.{js,ts,json,css,vue}": [
       "prettier --write",
-      "eslint --fix",
-      "git add ."
+      "eslint --fix"
     ],
     "src/{main.ts,App.vue}": [
       "prettier --write",
-      "eslint --fix",
-      "git add ."
+      "eslint --fix"
     ]
   },
   "husky": {
