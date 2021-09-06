@@ -5,21 +5,10 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "precommit": "lint-staged"
-  },
-  "lint-staged": {
-    "src/**/*.{js,ts,json,css,vue}": [
-      "prettier --write",
-      "eslint --fix"
-    ],
-    "src/{main.ts,App.vue}": [
-      "prettier --write",
-      "eslint --fix"
-    ]
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "ant-design-vue": "^1.7.7",
+    "ant-design-vue": "^2.2.6",
     "core-js": "^3.6.5",
     "vue": "^3.0.0"
   },

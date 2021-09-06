@@ -3,6 +3,7 @@
   <ul>
     <li>开箱即用</li>
     <li>typescript</li>
+    <a-button>imooc</a-button>
     <li>Vue3</li>
     <li>支持 tsx</li>
     <li>eslint</li>
@@ -11,10 +12,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
 export default defineComponent({
   name: 'App',
-})
+});
 </script>
 
 <style>

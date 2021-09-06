@@ -1,12 +1,6 @@
 import { createApp } from "vue";
 import App from "./App.vue";
+import Antd from "ant-design-vue";
+import "ant-design-vue/dist/antd.css";
 
-createApp(App).mount("#app");
-
-const a = {
-  a: "1",
-  b: "2",
-  c: {
-    n: ["1", "2"],
-  },
-};
+createApp(App).use(Antd).mount("#app");
