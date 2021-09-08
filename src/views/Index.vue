@@ -1,12 +1,12 @@
 <template>
     <div class="homepage-container">
         <a-layout :style="{background:'#fff'}">
-            <a-layout-header class="header">
+            <a-layout-header class="header" :class="{'transparent-header' : isHome }">
                 <div class="page-title">
-                    <router-link to="/">慕课乐高</router-link>
+                    <router-link to="/"><img class="logo-img" src="../assets/logo2.png"/></router-link>
                 </div>
             </a-layout-header>
-            <a-layout-content class="home-layout">
+            <a-layout-content :class="{ 'home-layout': isHome }">
                 <router-view></router-view>
             </a-layout-content>
         </a-layout>
@@ -16,12 +16,17 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
     name: 'Index',
     setup() {
-        return {}
+        const route = useRoute()
+        const isHome = computed( ()=>route.name === 'home' )
+        return {
+            isHome
+        }
     },
 })
 </script>
@@ -34,6 +39,17 @@ export default defineComponent({
 }
 .page-title {
   color: #fff;
+}
+.logo-img{
+    height: 35px;
+}
+.transparent-header{
+    background-color: rgba(0, 0, 0, .5);
+    z-index: 100;
+}
+.home-layout{
+    position: relative;
+    top: -70px;
 }
 </style>
 
