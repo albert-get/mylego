@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory } from "vue-router"
 import Home from '../views/Home.vue'
 import Index from '../views/Index.vue'
 import TemplateDetail from '../views/TemplateDetail.vue'
-import Works from '../views/works.vue'
+import Works from '../views/Works.vue'
 
 
 const router = createRouter({
@@ -30,7 +30,7 @@ const router = createRouter({
     },{
         path: '/editor/:id',
         name: 'editor',
-        component: () => import( '../views/editor.vue' ),
+        component: () => import( '../views/Editor.vue' ),
         meta: { title: '编辑我的设计', requireLogin: true }
     },{
         path: '/login',
@@ -39,3 +39,5 @@ const router = createRouter({
         meta: {title: '登录到慕课乐高', disableLoading: true }
     }]
 })
+
+export default router
