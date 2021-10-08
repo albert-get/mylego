@@ -5,6 +5,7 @@
                 <div class="page-title">
                     <router-link to="/"><img class="logo-img" src="../assets/logo2.png"/></router-link>
                 </div>
+                <user-profile ></user-profile>
             </a-layout-header>
             <a-layout-content :class="{ 'home-layout': isHome }">
                 <router-view></router-view>
@@ -53,9 +54,13 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import UserProfile from '../components/UserProfile.vue'
 
 export default defineComponent({
     name: 'Index',
+    components: {
+        UserProfile
+    },
     setup() {
         const route = useRoute()
         const isHome = computed( ()=>route.name === 'home' )
