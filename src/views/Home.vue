@@ -7,13 +7,49 @@
                 <a-input-search placeholder="搜索一下快速找模版" enter-button size="large" class="input-search" />
             </div>
         </div>
+        <div class="welcome-container">
+            <div class="welcome-container-inner">
+                <a-row>
+                    <a-col :span="8" class="col">
+                        <html5-two-tone class="icon" />
+                        <h3>专注H5 始终如一</h3>
+                        <p>三年保持行业领先</p>
+                    </a-col>
+                    <a-col :span="8" class="col">
+                        <build-two-tone class="icon" />
+                        <h3>海量 H5 模版</h3>
+                        <p>一键生成，一分钟轻松制作</p>
+                    </a-col>
+                    <a-col :span="8" class="col">
+                        <bulb-two-tone class="icon" />
+                        <h3>极致体验</h3>
+                        <p>用户的一致选择</p>
+                    </a-col>
+                </a-row>
+            </div>
+        </div>
+        <div class="content-container">
+            <a-row></a-row>
+            <a-row></a-row>
+            <a-row></a-row>
+            <div class="my-works">
+                <a-row></a-row>
+                <a-row></a-row>
+            </div>
+        </div>
     </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { Html5TwoTone, BuildTwoTone, BulbTwoTone } from '@ant-design/icons-vue'
 
 export default defineComponent({
     name: 'Home',
+    components:{
+        Html5TwoTone,
+        BuildTwoTone,
+        BulbTwoTone
+    },
     setup() {
         return {}
     },
@@ -66,6 +102,32 @@ export default defineComponent({
                     overflow: hidden;
                 }
             }
+        }
+    }
+    .welcome-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #f2f2f2;
+        padding-top: 20px;
+        padding-bottom: 10px;
+        .welcome-container-inner{
+            width: 80%;
+            .col{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                h3{
+                    color: #333;
+                }
+                p{
+                    color: #666;
+                }
+            }
+        }
+        .icon{
+            font-size: 60px;
         }
     }
 }
