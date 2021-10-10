@@ -94,4 +94,64 @@ export default defineComponent({
 </script>
 <style>
 /* 这里的样式在templatelist里写的这里也适用 */
+.poster-item {
+  position: relative;
+  margin-bottom: 20px;
+}
+.poster-item .ant-card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+.tag-list {
+  position: absolute;
+  top: -4px;
+  left: 6px;
+}
+.tag-list .ant-tag{
+    border-radius: 10px;
+}
+.tag-list .ant-tag:hover {
+    color: #1890ff;
+}
+.poster-item .ant-card-cover {
+  height: 390px;
+  position: relative;
+  overflow: hidden;
+}
+.poster-item .ant-card-cover > img {
+  width: 100%;
+  transition: all ease-in .2s;
+  font-size: 0;
+}
+.poster-item:hover .ant-card-cover > img {
+  transform: scale(1.25);
+}
+.poster-item .ant-card-cover .hover-item {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  background: rgba(0, 0, 0, .8);
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+.poster-item:hover .hover-item {
+  display: flex;
+}
+.poster-item:hover .hover-item .ant-btn{
+    border-radius: 20px;
+}
+.poster-item .ant-card-body {
+    padding: 0;
+}
+.poster-item .ant-card-meta-title {
+    color: #333;
+    padding: 10px 12px;
+    border-bottom: 1px solid #f2f2f2;
+    margin-bottom: 0!important;
+}
 </style>

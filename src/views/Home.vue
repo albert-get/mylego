@@ -48,7 +48,7 @@
                         <router-link to="/works">查看我的所有作品</router-link>
                     </a-row>
                     <a-row>
-                        <WorksList :list="testData"></WorksList>
+                        <MyWorksList :list="testData"/>
                     </a-row>
                 </div>
             </div>
@@ -59,7 +59,7 @@
 import { defineComponent } from 'vue'
 import { Html5TwoTone, BuildTwoTone, BulbTwoTone } from '@ant-design/icons-vue'
 import TemplateList from '../components/TemplateList.vue'
-import WorksList from '../components/WorksList.vue'
+import MyWorksList from '../components/MyWorksList.vue'
 
 export default defineComponent({
     name: 'Home',
@@ -68,7 +68,7 @@ export default defineComponent({
         BuildTwoTone,
         BulbTwoTone,
         TemplateList,
-        WorksList
+        MyWorksList
     },
     setup() {
         const testData = [

@@ -1,5 +1,5 @@
 <template>
-    <div>eidtor</div>
+    <div>editor</div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'

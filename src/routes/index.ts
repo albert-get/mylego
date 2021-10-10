@@ -26,6 +26,11 @@ const router = createRouter({
             name: 'works',
             component: Works,
             meta: { title: '我的作品', requireLogin: true }
+        },{
+            path: '/setting',
+            name: 'setting',
+            component: () => import( '../views/Setting.vue'),
+            meta: { title: '我的信息', requireLogin: true }
         }]
     },{
         path: '/editor/:id',

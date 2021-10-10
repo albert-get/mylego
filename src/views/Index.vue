@@ -7,7 +7,7 @@
                 </div>
                 <user-profile ></user-profile>
             </a-layout-header>
-            <a-layout-content :class="{ 'home-layout': isHome }">
+            <a-layout-content :class="{ 'home-layout': isHome }" class="index-layout-container">
                 <router-view></router-view>
             </a-layout-content>
         </a-layout>
@@ -72,6 +72,12 @@ export default defineComponent({
 </script>
 
 <style>
+.index-layout-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
 .header {
   display: flex;
   justify-content: space-between;
