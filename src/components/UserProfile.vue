@@ -51,14 +51,17 @@ export default defineComponent({
 })
 </script>
 
+<style scoped>
+
+.inherit-color{
+    color: inherit;
+}
+</style>
 <style>
-.user-profile-component .ant-btn-two-chinese-chars{
+.user-profile-component .ant-btn:first-child{
     border-radius: 16px 0 0 16px!important;
 }
 .user-profile-component .ant-dropdown-trigger{
     border-radius:  0 16px 16px 0 !important;
-}
-.inherit-color{
-    color: inherit;
 }
 </style>
