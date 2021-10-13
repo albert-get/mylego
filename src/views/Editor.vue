@@ -4,6 +4,7 @@
             <a-layout-header class="header">
                 <div class="page-title">
                     <span>作品名称：</span>
+                    <InlineEditor :value="'未命名作品'"/>
                 </div>
                 <a-space size="large">
                     <a-button type="primary" shape="round">预览和设置</a-button>
@@ -70,13 +71,15 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { FontSizeOutlined, FileImageOutlined, BlockOutlined } from '@ant-design/icons-vue'
+import InlineEditor from '../components/InlineEditor.vue'
 
 export default defineComponent({
     name: 'Editor',
     components: {
         FontSizeOutlined,
         FileImageOutlined,
-        BlockOutlined
+        BlockOutlined,
+        InlineEditor
     },
     setup() {
         return {}
@@ -90,6 +93,10 @@ export default defineComponent({
     .editor-container-layout{
         width: 100vw;
         height: 100vh;
+        .page-title{
+            display: flex;
+            align-items: center;
+        }
         .sidebar-container{
             .ant-tabs-tab{
                 margin: 0;
