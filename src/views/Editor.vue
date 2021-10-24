@@ -25,19 +25,21 @@
             <a-layout>
                 <a-layout-sider width="300" style="background: #fff">
                     <div class="sidebar-container">
-                        <div style="height:20px;"></div>
+                        <!-- <div style="height:20px;"></div> -->
                         <a-tabs>
                             <a-tab-pane key="1">
                                 <template #tab>
                                     <FontSizeOutlined/>
                                     文本
                                 </template>
+                                <ComponentsListText :list="defaultTextTemplates" @onItemClick="addItem"/>
                             </a-tab-pane>
                             <a-tab-pane key="2">
                                 <template #tab>
                                     <FileImageOutlined/>
                                     图片
                                 </template>
+                                <ComponentsListImage :list="defaultImageTemplates" @onItemClick="addItem" />
                             </a-tab-pane>
                             <a-tab-pane key="3">
                                 <template #tab>
@@ -72,6 +74,9 @@
 import { defineComponent } from 'vue'
 import { FontSizeOutlined, FileImageOutlined, BlockOutlined } from '@ant-design/icons-vue'
 import InlineEditor from '../components/InlineEditor.vue'
+import { defaultTextTemplates, defaultImageTemplates }  from '../defaultTemplates'
+import ComponentsListText from '../components/ComponentsListText.vue'
+import ComponentsListImage from '../components/ComponentsListImage.vue'
 
 export default defineComponent({
     name: 'Editor',
@@ -79,10 +84,19 @@ export default defineComponent({
         FontSizeOutlined,
         FileImageOutlined,
         BlockOutlined,
-        InlineEditor
+        InlineEditor,
+        ComponentsListText,
+        ComponentsListImage
     },
     setup() {
-        return {}
+        function addItem () {
+            return 0
+        }
+        return {
+            addItem,
+            defaultTextTemplates,
+            defaultImageTemplates
+        }
     },
 })
 </script>
