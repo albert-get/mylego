@@ -60,7 +60,11 @@
                         </a-tabs>
                     </div>
                 </a-layout-sider>
-                <a-layout-content class="preview-container"></a-layout-content>
+                <a-layout-content class="preview-container">
+                    <div class="canvas-container" :class="'picked'">
+                        <div class="preview-list" id="canvas-area" :class="{'canvas-fix': canvasFix}"></div>
+                    </div>
+                </a-layout-content>
                 <a-layout-sider width="300" style="background: #fff">
                     <div class="settings-panel">
                         <a-tabs type="card">
@@ -86,6 +90,7 @@ import { FontSizeOutlined, FileImageOutlined, BlockOutlined, UploadOutlined } fr
 import InlineEditor from '../components/InlineEditor.vue'
 import { defaultTextTemplates, defaultImageTemplates, defaultShapeTemplate }  from '../defaultTemplates'
 import ComponentsList from '../components/ComponentsList.vue'
+import EditWrapper from '../components/EditWrapper.vue'
 
 export default defineComponent({
     name: 'Editor',
@@ -96,6 +101,7 @@ export default defineComponent({
         UploadOutlined,
         InlineEditor,
         ComponentsList,
+        // EditWrapper,
     },
     setup() {
         function addItem () {
@@ -137,6 +143,24 @@ export default defineComponent({
                 margin-bottom: 10px;
             }
         }
+        .preview-container{
+            position: relative;
+            overflow-y: scroll;
+            .title{
+                line-height: 50px;
+                text-align: center;
+            }
+            .canvas-container{
+                position: absolute;
+                width: 375px;
+                height: 667px;
+                box-sizing: border-box;
+                left: 0;
+                right: 0;
+                bottom: 20px;
+                margin: auto;
+            }
+        }
         .settings-panel{
             height: 100%;
             .ant-tabs-nav-scroll{
@@ -145,6 +169,12 @@ export default defineComponent({
             }
         }
     }
+}
+.picked{
+    border: 1px solid #1890ff;
+}
+.dispicked{
+    border: 1px solid #ccc;
 }
 .ant-tabs{
     height: 100%;
