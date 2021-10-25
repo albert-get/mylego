@@ -23,14 +23,16 @@ export interface CommonComponentProps {
   left: string;
   top: string;
   right: string;
+  cursor: string;
 }
 export const commonDefaultProps: CommonComponentProps = {
+  cursor: 'pointer',
   // actions
   actionType: '',
   url: '',
   // size
   height: '',
-  width: '373px',
+  width: '100px',
   paddingLeft: '0px',
   paddingRight: '0px',
   paddingTop: '0px',
@@ -77,13 +79,13 @@ export const textDefaultProps: TextComponentProps = {
   fontStyle: 'normal',
   textDecoration: 'none',
   lineHeight: '1',
-  textAlign: 'left',
+  textAlign: 'center',
   color: '#000000',
   backgroundColor: '',
   ...commonDefaultProps
 }
 export const imageDefaultProps: ImageComponentProps = {
-  src: 'test.url',
+  src: '',
   ...commonDefaultProps
 }
 export const shapeDefaultProps: ShapeComponentProps = {
@@ -98,7 +100,7 @@ export const isEditingProp = {
 }
 export const textStylePropNames = without(Object.keys(textDefaultProps), 'actionType', 'url', 'text')
 export const imageStylePropsNames = without(Object.keys(imageDefaultProps), 'actionType', 'url', 'src')
-export const shapeStylePropsNames = without(Object.keys(imageDefaultProps), 'actionType', 'url')
+export const shapeStylePropsNames = without(Object.keys(shapeDefaultProps), 'actionType', 'url')
 export const transformToComponentProps = <T extends {}>(props: T) => {
   const mapProps = mapValues(props, (item) => {
     return {

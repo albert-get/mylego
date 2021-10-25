@@ -32,20 +32,30 @@
                                     <FontSizeOutlined/>
                                     文本
                                 </template>
-                                <ComponentsListText :list="defaultTextTemplates" @onItemClick="addItem"/>
+                                <ComponentsList type="text" :list="defaultTextTemplates" @onItemClick="addItem"/>
                             </a-tab-pane>
                             <a-tab-pane key="2">
                                 <template #tab>
                                     <FileImageOutlined/>
                                     图片
                                 </template>
-                                <ComponentsListImage :list="defaultImageTemplates" @onItemClick="addItem" />
+                                <a-upload
+                                    name="file"
+                                    :multiple="false"
+                                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                                    :headers="headers"
+                                    @change="handleChange"
+                                >
+                                    <a-button class="upload"><UploadOutlined/>图片上传</a-button>
+                                </a-upload>
+                                <ComponentsList type="image" :list="defaultImageTemplates" @onItemClick="addItem" />
                             </a-tab-pane>
                             <a-tab-pane key="3">
                                 <template #tab>
                                     <BlockOutlined/>
                                     形状
                                 </template>
+                                <ComponentsList type="shape" :list="defaultShapeTemplate" @onItemClick="addItem" />
                             </a-tab-pane>
                         </a-tabs>
                     </div>
@@ -72,11 +82,10 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { FontSizeOutlined, FileImageOutlined, BlockOutlined } from '@ant-design/icons-vue'
+import { FontSizeOutlined, FileImageOutlined, BlockOutlined, UploadOutlined } from '@ant-design/icons-vue'
 import InlineEditor from '../components/InlineEditor.vue'
-import { defaultTextTemplates, defaultImageTemplates }  from '../defaultTemplates'
-import ComponentsListText from '../components/ComponentsListText.vue'
-import ComponentsListImage from '../components/ComponentsListImage.vue'
+import { defaultTextTemplates, defaultImageTemplates, defaultShapeTemplate }  from '../defaultTemplates'
+import ComponentsList from '../components/ComponentsList.vue'
 
 export default defineComponent({
     name: 'Editor',
@@ -84,9 +93,9 @@ export default defineComponent({
         FontSizeOutlined,
         FileImageOutlined,
         BlockOutlined,
+        UploadOutlined,
         InlineEditor,
-        ComponentsListText,
-        ComponentsListImage
+        ComponentsList,
     },
     setup() {
         function addItem () {
@@ -95,7 +104,8 @@ export default defineComponent({
         return {
             addItem,
             defaultTextTemplates,
-            defaultImageTemplates
+            defaultImageTemplates,
+            defaultShapeTemplate,
         }
     },
 })
@@ -112,6 +122,7 @@ export default defineComponent({
             align-items: center;
         }
         .sidebar-container{
+            height: 100%;
             .ant-tabs-tab{
                 margin: 0;
             }
@@ -119,12 +130,31 @@ export default defineComponent({
                 display: flex;
                 justify-content: center;
             }
+            .upload{
+                width: 300px;
+                background: #1890ff;
+                color: #fff;
+                margin-bottom: 10px;
+            }
         }
         .settings-panel{
+            height: 100%;
             .ant-tabs-nav-scroll{
                 display: flex;
                 justify-content: center;
             }
+        }
+    }
+}
+.ant-tabs{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    .ant-tabs-content{
+        flex: 1;
+        height: 0;
+        .ant-tabs-tabpane{
+            overflow-y: auto;
         }
     }
 }

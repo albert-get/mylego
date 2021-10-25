@@ -1,6 +1,6 @@
 
 
-import { AllComponentProps, textDefaultProps, imageDefaultProps } from 'lego-bricks'
+import { AllComponentProps } from 'lego-bricks'
 
 
 export type AllFormProps = PageProps & AllComponentProps

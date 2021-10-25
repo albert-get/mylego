@@ -1,8 +1,20 @@
 <template>
   <div class="component-list">
-    <div v-for="(item, index) in list" :key="index" class="component-item" @click="onItemClick(item)">
-      <l-text v-bind="item"></l-text>
-    </div>
+    <template v-if="type==='text'">
+      <div v-for="(item, index) in list" :key="index" class="component-item" @click="onItemClick(item)">
+        <l-text v-bind="item"></l-text>
+      </div>
+    </template>
+    <template v-if="type==='image'">
+      <div v-for="(item, index) in list" :key="index" class="component-item" @click="onItemClick(item)">
+        <l-image v-bind="item"></l-image>
+      </div>
+    </template>
+    <template v-if="type==='shape'">
+      <div v-for="(item, index) in list" :key="index" class="component-item" @click="onItemClick(item)">
+        <l-shape v-bind="item"></l-shape>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -12,22 +24,32 @@ import { v4 as uuidv4 } from 'uuid'
 import { ComponentData } from '../store/editor'
 import { TextComponentProps } from 'lego-bricks'
 import LText from './LText.vue'
+import LImage from './LImage.vue'
+import LShape from './LShape.vue'
+type P = 'l-text' | 'l-image' | 'l-shape'
 export default defineComponent({
   props: {
     list: {
       type: Array,
       required: true
+    },
+    type: {
+      type: String,
+      required: true
     }
   },
   emits: ['on-item-click'],
-  name: 'components-list-text',
+  name: 'components-list',
   components: {
-    LText
+    LText,
+    LImage,
+    LShape
   },
   setup(props, context) {
+    const p = props;
     const onItemClick = (props: TextComponentProps) => {
       const componentData: ComponentData = {
-        name: 'l-text',
+        name: 'l-' + p.type as P,
         id: uuidv4(),
         props
       }
