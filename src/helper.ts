@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { RespUploadData } from './store/respTypes'
 import { message } from 'ant-design-vue'
 import html2canvas from 'html2canvas'

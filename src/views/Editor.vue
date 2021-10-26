@@ -61,8 +61,27 @@
                     </div>
                 </a-layout-sider>
                 <a-layout-content class="preview-container">
+                    <div></div>
                     <div class="canvas-container" :class="'picked'">
-                        <div class="preview-list" id="canvas-area" :class="{'canvas-fix': canvasFix}"></div>
+                        <div class="preview-list" id="canvas-area" :class="{'canvas-fix': canvasFix}">
+                            <div class="body-container" :style="page.props">
+                                <edit-wrapper 
+                                    @setActive="setActive"
+                                    @update-position="updatePosition"
+                                    v-for="component in components"
+                                    :key="component.id"
+                                    :id="component.id"
+                                    :hidden="component.isHidden"
+                                    :props="component.props"
+                                    :active="component.id === (currentElement && currentElement.id)"
+                                >
+                                    <component 
+                                        :is="component.name"
+                                        v-bind="component.props"
+                                    />
+                                </edit-wrapper>
+                            </div>
+                        </div>
                     </div>
                 </a-layout-content>
                 <a-layout-sider width="300" style="background: #fff">
@@ -85,12 +104,14 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
 import { FontSizeOutlined, FileImageOutlined, BlockOutlined, UploadOutlined } from '@ant-design/icons-vue'
 import InlineEditor from '../components/InlineEditor.vue'
 import { defaultTextTemplates, defaultImageTemplates, defaultShapeTemplate }  from '../defaultTemplates'
 import ComponentsList from '../components/ComponentsList.vue'
 import EditWrapper from '../components/EditWrapper.vue'
+import { useStore } from 'vuex'
+import { GlobalDataProps } from '../store/index'
 
 export default defineComponent({
     name: 'Editor',
@@ -101,17 +122,23 @@ export default defineComponent({
         UploadOutlined,
         InlineEditor,
         ComponentsList,
-        // EditWrapper,
+        EditWrapper,
     },
     setup() {
-        function addItem () {
-            return 0
+        const store = useStore<GlobalDataProps>()
+        const page = computed(() => store.state.editor.page)
+        const components = computed(() => store.state.editor.components)
+        const addItem = (component: any) => {
+            console.log(components,'lllll')
+            store.commit('addComponent', component)
         }
         return {
             addItem,
             defaultTextTemplates,
             defaultImageTemplates,
             defaultShapeTemplate,
+            page,
+            components,
         }
     },
 })
@@ -145,7 +172,7 @@ export default defineComponent({
         }
         .preview-container{
             position: relative;
-            overflow-y: scroll;
+            overflow: scroll;
             .title{
                 line-height: 50px;
                 text-align: center;
@@ -154,11 +181,13 @@ export default defineComponent({
                 position: absolute;
                 width: 375px;
                 height: 667px;
-                box-sizing: border-box;
                 left: 0;
+                box-sizing: content-box;
                 right: 0;
-                bottom: 20px;
+                top: 20px;
                 margin: auto;
+                overflow-y: scroll;
+                overflow-x: hidden;
             }
         }
         .settings-panel{
