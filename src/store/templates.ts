@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Module } from 'vuex'
 import { GlobalDataProps, actionWrapper } from './index'
 import { RespListData, RespData } from './respTypes'

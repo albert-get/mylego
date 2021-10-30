@@ -1,3 +1,4 @@
+/* eslint-disable */
 import axios, { AxiosRequestConfig } from 'axios'
 import { Module, ActionContext } from 'vuex'
 import { GlobalDataProps, actionWrapper } from './index' 

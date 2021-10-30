@@ -22,7 +22,7 @@
 import { defineComponent } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import { ComponentData } from '../store/editor'
-import { TextComponentProps } from 'lego-bricks'
+import { TextComponentProps } from '../defaultProps'
 import LText from './LText.vue'
 import LImage from './LImage.vue'
 import LShape from './LShape.vue'

@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { cloneDeep } from 'lodash-es'
 import store, { GlobalDataProps, actionWrapper } from './index'
 import { insertAt } from '../helper'
-import { AllComponentProps, textDefaultProps, imageDefaultProps } from 'lego-bricks'
+import { AllComponentProps, textDefaultProps, imageDefaultProps } from '../defaultProps'
 import { RespWorkData, ListData, RespData, RespListData } from './respTypes'
 export type MoveDirection = 'Up' | 'Down' | 'Left' | 'Right'
 
@@ -103,7 +103,6 @@ const pageDefaultProps = { backgroundColor: '#ffffff', backgroundImage: '', back
 const debounceChange = (callback: (...args: any) => void, timeout = 1000) => {
   let timer = 0
   return (...args: any) => {
-    console.log(timer)
     clearTimeout(timer)
     timer = window.setTimeout(() => {
       timer = 0
@@ -187,7 +186,7 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     },
     addComponent: setDirtyWrapper((state, component: ComponentData) => {
       component.layerName = '图层' + (state.components.length + 1)
-      state.components.push(component)
+      state.components.push(cloneDeep(component))
       pushHistory(state, {
         id: uuidv4(),
         componentId: component.id,
@@ -356,6 +355,7 @@ const editor: Module<EditorProps, GlobalDataProps> = {
         }
       } else {
         if (state.page.props) {
+          console.log(state.page.props)
           state.page.props[key as keyof PageProps] = value
         }
       }

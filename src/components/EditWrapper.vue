@@ -3,14 +3,16 @@
     ref="editWrapper"
     :style="styles"
     :data-component-id="id"
-    @mousedown="startMove"
+    @mousedown.stop="startMove"
     @click="onItemClick(id)" :class="{ active: active, hidden: hidden }">
-    <slot></slot>
+    <div class="move-wrapper">
+      <slot></slot>
+    </div>
     <div class="resizers">
-      <div class='resizer top-left'  @mousedown.stop="startResize('top-left')"></div>
-      <div class='resizer top-right'  @mousedown.stop="startResize('top-right')"></div>
-      <div class='resizer bottom-left'  @mousedown.stop="startResize('bottom-left')"></div>
-      <div class='resizer bottom-right' @mousedown.stop="startResize('bottom-right')"></div>
+      <div class='resizer top-left'  @mousedown.stop="startResize($event,'top-left')"></div>
+      <div class='resizer top-right'  @mousedown.stop="startResize($event,'top-right')"></div>
+      <div class='resizer bottom-left'  @mousedown.stop="startResize($event,'bottom-left')"></div>
+      <div class='resizer bottom-right' @mousedown.stop="startResize($event,'bottom-right')"></div>
     </div>
   </div>
 </template>
@@ -18,6 +20,9 @@
 <script lang="ts">
 import { defineComponent, computed, ref, nextTick } from 'vue'
 import { pick } from 'lodash-es'
+import { useStore } from 'vuex'
+import { GlobalDataProps } from '../store/index'
+
 type ResizeDirection = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
 interface OriginalPositions {
   left: number;
@@ -46,6 +51,7 @@ export default defineComponent({
   },
   emits: ['set-active', 'update-position'],
   setup(props, context) {
+    const store = useStore<GlobalDataProps>()
     const editWrapper = ref<null | HTMLElement>(null)
     const onItemClick = (id: string) => {
       context.emit('set-active', id)
@@ -65,16 +71,19 @@ export default defineComponent({
         top
       }
     }
-    const caculateSize = (direction: ResizeDirection, e: MouseEvent, positions: OriginalPositions) => {
+    const initE = {
+      clientX: 0,
+      clientY: 0
+    }
+    const caculateSize = (direction: ResizeDirection, e: MouseEvent, positions: { left: number; top: number; width: number; height: number }) => {
       const { clientX, clientY } = e
-      const { left, right, top, bottom } = positions
-      const container = document.getElementById('canvas-area') as HTMLElement
-      const rightWidth = clientX - left
-      const leftWidth = right - clientX
-      const bottomHeight = clientY - top
-      const topHeight = bottom - clientY
-      const topOffset = clientY - container.offsetTop + container.scrollTop
-      const leftOffset = clientX - container.offsetLeft
+      const { left, top, width, height } = positions
+      const rightWidth = width + (clientX - initE.clientX)
+      const leftWidth = width - (clientX - initE.clientX)
+      const leftOffset = left + (clientX - initE.clientX)
+      const bottomHeight = height + (clientY - initE.clientY)
+      const topHeight = height - (clientY - initE.clientY )
+      const topOffset = top + (clientY - initE.clientY)
       switch (direction) {
         case 'top-left':
           return {
@@ -104,27 +113,30 @@ export default defineComponent({
           break
       }
     }
-    const startResize = (direction: ResizeDirection) => {
+    
+    const startResize = (e: MouseEvent,direction: ResizeDirection) => {
+      initE.clientX = e.clientX
+      initE.clientY = e.clientY
       const currentElement = editWrapper.value as HTMLElement
-      const { left, right, top, bottom } = currentElement.getBoundingClientRect()
+      const {left, top, width, height } = getComputedStyle(currentElement)
       const handleMove = (e: MouseEvent) => {
-        const size = caculateSize(direction, e, { left, right, top, bottom })
-        const { style } = currentElement
-        if (size) {
-          style.width = size.width + 'px'
-          style.height = size.height + 'px'
-          if (size.left) {
-            style.left = size.left + 'px'
-          }
-          if (size.top) {
-            style.top = size.top + 'px'
-          }
-        }
-      }
-      const handleMouseUp = (e: MouseEvent) => {
-        document.removeEventListener('mousemove', handleMove)
-        const size = caculateSize(direction, e, { left, right, top, bottom })
+        const size = caculateSize(direction, e, {left: parseInt(left),top: parseInt(top), width:parseInt(width),height:parseInt(height) })
+        // const { style } = currentElement
+        // if (size) {
+        //   style.width = size.width + 'px'
+        //   style.height = size.height + 'px'
+        //   if (size.left) {
+        //     style.left = size.left + 'px'
+        //   }
+        //   if (size.top) {
+        //     style.top = size.top + 'px'
+        //   }
+        // }
         context.emit('update-position', { ...size, id: props.id })
+      }
+      const handleMouseUp = () => {
+        document.removeEventListener('mousemove', handleMove)
+        
         nextTick(() => {
           document.removeEventListener('mouseup', handleMouseUp)
         })
@@ -132,28 +144,28 @@ export default defineComponent({
       document.addEventListener('mousemove', handleMove)
       document.addEventListener('mouseup', handleMouseUp)
     }
+    const initPost = {
+      x: 0,
+      y: 0
+    }
+    const ePost = {
+      left: 0,
+      top: 0
+    }
     const startMove = (e: MouseEvent) => {
-      const currentElement = editWrapper.value
-      if (currentElement) {
-        const { left, top } = currentElement.getBoundingClientRect() 
-        gap.x = e.clientX - left
-        gap.y = e.clientY - top
-        console.log(gap)
-      }
+      const currentElement = editWrapper.value as HTMLElement
+      initPost.x = e.clientX
+      initPost.y = e.clientY
+      const { left, top } = currentElement.style
+      ePost.left = parseInt(left)
+      ePost.top = parseInt(top)
       const handleMove = (e: MouseEvent) => {
-        const { left, top } = caculateMovePosition(e)
         isMoving = true
-        console.log(left, top)
-        if (currentElement) {
-          currentElement.style.top = top + 'px'
-          currentElement.style.left = left + 'px'
-        }
+        context.emit('update-position', { left:e.clientX -initPost.x + ePost.left, top:e.clientY - initPost.y + ePost.top, id: props.id })
       }
       const handleMouseUp = (e: MouseEvent) => {
         document.removeEventListener('mousemove', handleMove)
         if (isMoving) {
-          const { left, top } = caculateMovePosition(e)
-          context.emit('update-position', { left, top, id: props.id })
           isMoving = false
         }
         nextTick(() => {
@@ -182,10 +194,13 @@ export default defineComponent({
   user-select: none;
   box-sizing: content-box !important;
 }
-.edit-wrapper > * {
+.edit-wrapper .move-wrapper {
   position: static !important;
   width: 100% !important;
   height: 100% !important;
+}
+.move-wrapper > * {
+  position: static !important;
 }
 .edit-wrapper:hover {
   border: 1px dashed #ccc;
@@ -200,6 +215,8 @@ export default defineComponent({
 }
 .edit-wrapper .resizers {
   display: none;
+  width: 0 !important;
+  height: 0 !important;
 }
 .edit-wrapper.active .resizers {
   display: block;

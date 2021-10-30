@@ -112,6 +112,11 @@ import ComponentsList from '../components/ComponentsList.vue'
 import EditWrapper from '../components/EditWrapper.vue'
 import { useStore } from 'vuex'
 import { GlobalDataProps } from '../store/index'
+import LText from '../components/LText.vue'
+import LImage from '../components/LImage.vue'
+import LShape from '../components/LShape.vue'
+import { ComponentData } from '../store/editor'
+import { pickBy } from 'lodash-es'
 
 export default defineComponent({
     name: 'Editor',
@@ -123,14 +128,27 @@ export default defineComponent({
         InlineEditor,
         ComponentsList,
         EditWrapper,
+        LText,
+        LImage,
+        LShape,
     },
     setup() {
         const store = useStore<GlobalDataProps>()
         const page = computed(() => store.state.editor.page)
         const components = computed(() => store.state.editor.components)
         const addItem = (component: any) => {
-            console.log(components,'lllll')
             store.commit('addComponent', component)
+        }
+        const setActive = (id: string) => {
+            store.commit('setActive', id)
+        }
+        const currentElement = computed<ComponentData | null>(() => store.getters.getCurrentElement)
+        const updatePosition = (data: { left: number; top: number; id: string }) => {
+            const { id } = data
+            const updatedData = pickBy<number>(data, (v, k) => k !== 'id')
+            const keysArr = Object.keys(updatedData)
+            const valuesArr = Object.values(updatedData).map(v => v + 'px')
+            store.commit('updateComponent', { key: keysArr, value: valuesArr, id })
         }
         return {
             addItem,
@@ -139,6 +157,9 @@ export default defineComponent({
             defaultShapeTemplate,
             page,
             components,
+            setActive,
+            currentElement,
+            updatePosition,
         }
     },
 })
