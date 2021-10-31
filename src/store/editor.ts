@@ -186,12 +186,13 @@ const editor: Module<EditorProps, GlobalDataProps> = {
     },
     addComponent: setDirtyWrapper((state, component: ComponentData) => {
       component.layerName = '图层' + (state.components.length + 1)
-      state.components.push(cloneDeep(component))
+      // component.props.zIndex = state.components.length + 1 + ''
+      state.components.push(component)
       pushHistory(state, {
         id: uuidv4(),
         componentId: component.id,
         type: 'add',
-        data: cloneDeep(component)
+        data: component
       })
     }),
     setActive(state, currentId: string) {

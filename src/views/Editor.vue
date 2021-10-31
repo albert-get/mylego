@@ -86,15 +86,43 @@
                 </a-layout-content>
                 <a-layout-sider width="300" style="background: #fff">
                     <div class="settings-panel">
-                        <a-tabs type="card">
+                        <a-tabs>
                             <a-tab-pane key="1" tab="属性设置">
-                                
+                                <div v-if="currentElement">
+                                    <edit-group
+                                        v-if="!currentElement.isLocked"
+                                        :props="currentElement.props"
+                                        @change="handleChange"
+                                    ></edit-group>
+                                    <div v-else>
+                                        <a-empty>
+                                            <template #description>
+                                                <p>该元素被锁定，无法编辑</p>
+                                            </template>
+                                        </a-empty>
+                                    </div>
+                                </div>
+                                <div v-else>
+                                    <a-empty>
+                                        <template #description>
+                                            <p>在画布中选择元素并开始编辑</p>
+                                        </template>
+                                    </a-empty>
+                                </div>
                             </a-tab-pane>
                             <a-tab-pane key="2" tab="图层设置">
-                                
+                                <layer-list
+                                    :list="components"
+                                    :selectedId="currentElement && currentElement.id"
+                                    @change="handleChange"
+                                    @select="setActive"
+                                >
+                                </layer-list>
                             </a-tab-pane>
                             <a-tab-pane key="3" tab="页面设置">
-                                
+                                <div class="page-settings">
+                                    <props-table :props="page.props" @change="pageChange"></props-table>
+                                </div>
                             </a-tab-pane>
                         </a-tabs>
                     </div>
@@ -116,7 +144,12 @@ import LText from '../components/LText.vue'
 import LImage from '../components/LImage.vue'
 import LShape from '../components/LShape.vue'
 import { ComponentData } from '../store/editor'
-import { pickBy } from 'lodash-es'
+import { pickBy, cloneDeep } from 'lodash-es'
+import EditGroup from '../components/EditGroup.vue'
+import LayerList from '../components/LayerList.vue'
+// import LayerList from '../components/LayerListBack.vue'
+import PropsTable from '../components/PropsTable.vue'
+
 
 export default defineComponent({
     name: 'Editor',
@@ -131,13 +164,16 @@ export default defineComponent({
         LText,
         LImage,
         LShape,
+        EditGroup,
+        LayerList,
+        PropsTable,
     },
     setup() {
         const store = useStore<GlobalDataProps>()
         const page = computed(() => store.state.editor.page)
         const components = computed(() => store.state.editor.components)
         const addItem = (component: any) => {
-            store.commit('addComponent', component)
+            store.commit('addComponent', cloneDeep(component))
         }
         const setActive = (id: string) => {
             store.commit('setActive', id)
@@ -150,6 +186,12 @@ export default defineComponent({
             const valuesArr = Object.values(updatedData).map(v => v + 'px')
             store.commit('updateComponent', { key: keysArr, value: valuesArr, id })
         }
+        const handleChange = (e: any) => {
+            store.commit('updateComponent', e)
+        }
+        const pageChange = (e: any) => {
+            store.commit('updatePage', e)
+        }
         return {
             addItem,
             defaultTextTemplates,
@@ -160,6 +202,8 @@ export default defineComponent({
             setActive,
             currentElement,
             updatePosition,
+            handleChange,
+            pageChange,
         }
     },
 })
@@ -213,9 +257,15 @@ export default defineComponent({
         }
         .settings-panel{
             height: 100%;
+            .ant-tabs-tab{
+                margin: 0;
+            }
             .ant-tabs-nav-scroll{
                 display: flex;
                 justify-content: center;
+            }
+            .page-settings{
+                padding: 0 20px;
             }
         }
     }
@@ -234,6 +284,7 @@ export default defineComponent({
         flex: 1;
         height: 0;
         .ant-tabs-tabpane{
+            height: 100%;
             overflow-y: auto;
         }
     }

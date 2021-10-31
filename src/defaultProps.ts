@@ -24,6 +24,7 @@ export interface CommonComponentProps {
   top: string;
   right: string;
   cursor: string;
+  // zIndex: string;
 }
 export const commonDefaultProps: CommonComponentProps = {
   cursor: 'pointer',
@@ -49,7 +50,8 @@ export const commonDefaultProps: CommonComponentProps = {
   position: 'absolute',
   left: '0',
   top: '0',
-  right: '0'
+  right: '0',
+  // zIndex: '0',
 }
 export interface TextComponentProps extends CommonComponentProps {
   text: string;
