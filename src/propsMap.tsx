@@ -225,4 +225,27 @@ export const mapPropsToForms: PropsToForms = {
     },
     afterTransform: (e: string) => e ? `url('${e}')` : ''
   },
+  backgroundRepeat: {
+    ...defaultHandler,
+    component: 'a-select',
+    subComponent: 'a-select-option',
+    text: '背景重复',
+    options: [
+      { value: 'no-repeat', text: '无重复' },
+      { value: 'repeat-x', text: ' X轴重复' },
+      { value: 'repeat-y', text: 'Y轴重复' },
+      { value: 'repeat', text: '全部重复' }
+    ]
+  },
+  backgroundSize: {
+    ...defaultHandler,
+    component: 'a-select',
+    subComponent: 'a-select-option',
+    text: '背景大小',
+    options: [
+      { value: 'auto', text: '默认' },
+      { value: 'contain', text: '自动缩放' },
+      { value: 'cover', text: '自动填充' },
+    ]
+  },
 }

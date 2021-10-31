@@ -99,7 +99,13 @@ export const testComponents: ComponentData[] = [
   // { id: uuidv4(), name: 'l-text', layerName:'图层3', props: { ...textDefaultProps, text: 'hello3', fontSize: '15px', actionType: 'url', url: 'https://www.baidu.com', 'lineHeight': '3', textAlign: 'left', fontFamily: '' }},
   // { id: uuidv4(), name: 'l-image', layerName:'图层4', props: { ...imageDefaultProps, src: 'http://vue-maker.oss-cn-hangzhou.aliyuncs.com/vue-marker/5f3e3a17c305b1070f455202.jpg', width: '100px' }},
 ]
-const pageDefaultProps = { backgroundColor: '#ffffff', backgroundImage: '', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', height: '667px' }
+const pageDefaultProps = { 
+  backgroundColor: '#ffffff', 
+  backgroundImage: '', 
+  backgroundRepeat: 'no-repeat', 
+  backgroundSize: 'cover', 
+  height: '667px',
+}
 const debounceChange = (callback: (...args: any) => void, timeout = 1000) => {
   let timer = 0
   return (...args: any) => {

@@ -185,7 +185,6 @@ export default defineComponent({
             store.commit('updateComponent', { key: keysArr, value: valuesArr, id })
         }
         const handleChange = (e: any) => {
-            console.log('kkkkk',e)
             store.commit('updateComponent', e)
         }
         const pageChange = (e: any) => {
