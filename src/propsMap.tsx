@@ -171,7 +171,10 @@ export const mapPropsToForms: PropsToForms = {
   opacity: {
     component: 'a-slider',
     text: '透明度',
-    initalTransform: (v: number) => v ? v * 100 : 100,
+    initalTransform: (v: any) => {
+      const n = parseFloat(v)
+      return n ? n * 100 : 100
+    },
     afterTransform: (e: number) => (e / 100),
     extraProps: { min: 0, max: 100, reverse: true }
   },
@@ -212,7 +215,6 @@ export const mapPropsToForms: PropsToForms = {
         const reg = /\(["'](.+)["']\)/g
         const matches = reg.exec(v)
         if (matches && matches.length > 1) {
-          console.log(matches)
           return matches[1]
         } else {
           return ''

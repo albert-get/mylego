@@ -40,7 +40,7 @@ export const commonDefaultProps: CommonComponentProps = {
   paddingBottom: '0px',
   // border type
   borderStyle: 'none',
-  borderColor: '#000',
+  borderColor: '#000000',
   borderWidth: '0',
   borderRadius: '0',
   // shadow and opacity

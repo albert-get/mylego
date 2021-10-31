@@ -338,8 +338,8 @@ const editor: Module<EditorProps, GlobalDataProps> = {
             key.forEach((keyName, index) => {
               updatedComponent.props[keyName] = value[index]
             })
-          } else if (typeof key ==='string' && typeof value === 'string') {
-            updatedComponent.props[key] = value
+          } else if (typeof key ==='string') {
+            updatedComponent.props[key] = value as string
           }
         }
         
@@ -356,7 +356,6 @@ const editor: Module<EditorProps, GlobalDataProps> = {
         }
       } else {
         if (state.page.props) {
-          console.log(state.page.props)
           state.page.props[key as keyof PageProps] = value
         }
       }

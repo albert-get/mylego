@@ -42,9 +42,7 @@
                                 <a-upload
                                     name="file"
                                     :multiple="false"
-                                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                    :headers="headers"
-                                    @change="handleChange"
+                                    action=""
                                 >
                                     <a-button class="upload"><UploadOutlined/>图片上传</a-button>
                                 </a-upload>
@@ -60,13 +58,13 @@
                         </a-tabs>
                     </div>
                 </a-layout-sider>
-                <a-layout-content class="preview-container">
+                <a-layout-content class="preview-container"  @click.capture="documentClick">
                     <div></div>
-                    <div class="canvas-container" :class="'picked'">
-                        <div class="preview-list" id="canvas-area" :class="{'canvas-fix': canvasFix}">
+                    <div class="canvas-container" :class="{'picked':pageActive}" @click.capture="pageClick">
+                        <div class="preview-list" id="canvas-area" >
                             <div class="body-container" :style="page.props">
                                 <edit-wrapper 
-                                    @setActive="setActive"
+                                    @setActive="eidtorActive"
                                     @update-position="updatePosition"
                                     v-for="component in components"
                                     :key="component.id"
@@ -86,7 +84,7 @@
                 </a-layout-content>
                 <a-layout-sider width="300" style="background: #fff">
                     <div class="settings-panel">
-                        <a-tabs>
+                        <a-tabs :activeKey="activeSetting" @change="settingPannelChange">
                             <a-tab-pane key="1" tab="属性设置">
                                 <div v-if="currentElement">
                                     <edit-group
@@ -132,7 +130,7 @@
     </div>
 </template>
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import { FontSizeOutlined, FileImageOutlined, BlockOutlined, UploadOutlined } from '@ant-design/icons-vue'
 import InlineEditor from '../components/InlineEditor.vue'
 import { defaultTextTemplates, defaultImageTemplates, defaultShapeTemplate }  from '../defaultTemplates'
@@ -178,7 +176,7 @@ export default defineComponent({
         const setActive = (id: string) => {
             store.commit('setActive', id)
         }
-        const currentElement = computed<ComponentData | null>(() => store.getters.getCurrentElement)
+        const currentElement = computed<ComponentData | null>(() => store.getters.getCurrentElement || '')
         const updatePosition = (data: { left: number; top: number; id: string }) => {
             const { id } = data
             const updatedData = pickBy<number>(data, (v, k) => k !== 'id')
@@ -187,10 +185,32 @@ export default defineComponent({
             store.commit('updateComponent', { key: keysArr, value: valuesArr, id })
         }
         const handleChange = (e: any) => {
+            console.log('kkkkk',e)
             store.commit('updateComponent', e)
         }
         const pageChange = (e: any) => {
             store.commit('updatePage', e)
+        }
+        const activeSetting = ref('1')
+        const pageActive = ref(false)
+        const settingPannelChange = (key: any) => {
+            activeSetting.value = key
+        }
+        const eidtorActive = (id: string) => {
+            store.commit('setActive', id)
+            activeSetting.value = '1'
+            pageActive.value = false
+        }
+        
+        const pageClick = () => {
+            store.commit('setActive', '')
+            activeSetting.value = '3'
+            pageActive.value = true
+        }
+        const documentClick = () => {
+            activeSetting.value = '2'
+            pageActive.value = false
+            store.commit('setActive', '')
         }
         return {
             addItem,
@@ -204,6 +224,12 @@ export default defineComponent({
             updatePosition,
             handleChange,
             pageChange,
+            activeSetting,
+            settingPannelChange,
+            eidtorActive,
+            pageActive,
+            pageClick,
+            documentClick,
         }
     },
 })

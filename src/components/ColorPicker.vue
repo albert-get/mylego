@@ -18,11 +18,12 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-const defaultColors = ['#ffffff', '#f5222d', '#fa541c', '#fadb14', '#52c41a', '#1890ff', '#722ed1', '#8c8c8c', '#000000']
+
+const defaultColors = ['#ffffff', '#f5222d', '#fa541c', '#fadb14', '#52c41a', '#1890ff', '#722ed1', '#8c8c8c', '#000000','']
 export default defineComponent({
   props: {
     value: {
-      type: String
+      type: String,
     },
     colors: {
       type: Array as PropType<string[]>,
@@ -32,7 +33,12 @@ export default defineComponent({
   emits: ['change'],
   setup(props, context) {
     const onChange = (color: string) => {
-      context.emit('change', color)
+      if(color){
+        context.emit('change', color)
+      }else{
+        context.emit('change', 'rgba(0,0,0,0)')
+      }
+      
     }
     return {
       onChange
